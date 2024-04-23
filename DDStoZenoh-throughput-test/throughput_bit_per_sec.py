@@ -1,7 +1,6 @@
 import time
 import argparse
 import zenoh
-import threading
 
 from dataclasses import dataclass
 
@@ -19,7 +18,6 @@ class KeyedSeq(IdlStruct, typename="KeyedSeq"):
 
 payload = 0
 
-lock = threading.Lock()
 
 # callback class
 class Chatter_Callback:
@@ -36,17 +34,12 @@ class Chatter_Callback:
     def __call__(self, sample: zenoh.Sample):
         global payload
 
-        with lock:
-            # Increment message count for throughput calculation
-            self.message_count += 1
-
-            msg = KeyedSeq.deserialize(sample.payload)
-
-
-            # Store exchanged message size
-            payload = len(msg.baggage)
-
-            self._last_time = time.time()
+        # Increment message count for throughput calculation
+        self.message_count += 1
+        msg = KeyedSeq.deserialize(sample.payload)
+        # Store exchanged message size
+        payload = len(msg.baggage)
+        self._last_time = time.time()
 
 def main():
 
@@ -75,17 +68,14 @@ def main():
     finally:
         sub.undeclare()
         session.close()
-        time.sleep(5)  # Ensure all threads are exited
 
     # Calculate elapsed time based on how long the callback was up and working based on receiving message events
     elapsed_time = chatter_callback.get_duration()
 
-    with lock:
-        # Calculate bit rate (bit/s)
-        bit_per_sec = (chatter_callback.message_count * 8 * payload) / elapsed_time
+    # Calculate bit rate (bit/s)
+    bit_per_sec = (chatter_callback.message_count * 8 * payload) / elapsed_time
 
-    with lock:
-        throughput_tuple = (payload, bit_per_sec)
+    throughput_tuple = (payload, bit_per_sec)
 
     print("Throughput tuple: [payload(Bytes), rate(bits/s)]:\n\n                ", throughput_tuple)
 
