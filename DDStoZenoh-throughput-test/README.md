@@ -23,7 +23,7 @@ This example demonstrates a DDS network and Zenoh DDS bridge in containers. Both
 # python3 -m pip install eclipse-zenoh cyclonedds
 
 # Launch a DDS network and Zenoh bridge in containers 
-cd ./performance-tests/DDStoZenoh-throughput-test
+cd ./DDStoZenoh-throughput-test
 
 # Inside compose.yml file, you can change the size of message ...
 # Then ...
