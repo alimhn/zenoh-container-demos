@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     # command: ddsperf pub size 1k -T KS
-    command: cyclonedds performance publish --size 16k
+    command: cyclonedds performance publish --size 1k
     networks:
       - dds
 
