@@ -1,0 +1,27 @@
+connect:
+  endpoints: 
+    - 'tcp/localhost:7447'
+
+plugins:
+  dds:
+    allow:
+      - "DDSPerfRPingOU"
+      - "DDSPerfRPongOU"
+      - "/*/DDSPerfRPingOU"
+      - "/*/DDSPerfRPongOU"
+      - "DDSPerfCPUStats"
+      - "DDSPerfRDataOU"
+      - "/*/DDSPerfCPUStats"
+      - "/*/DDSPerfRDataOU"
+      - "DDSPerfRPingKS"
+      - "DDSPerfRPongKS"
+      - "/*/DDSPerfRPingKS"
+      - "/*/DDSPerfRPongKS"
+      - "DDSPerfCPUStats"
+      - "DDSPerfRDataKS"
+      - "/*/DDSPerfCPUStats"
+      - "/*/DDSPerfRDataKS"
+      - "/*/*"
+
+  # rest:
+  #   http_port: 8000

@@ -1,0 +1,29 @@
+services:
+  ping-dds:
+    build:
+      context: .
+    # entrypoint: ""
+    command: ddsperf ping 100000Hz
+    networks:
+      - zenoh
+
+  pong-zenoh:
+    build:
+      context: .
+    # entrypoint: ""
+    command: subscriber
+    networks:
+      - zenoh
+    
+  bridge:
+    image: eclipse/zenoh-bridge-dds:latest
+    command: -c /etc/zenohd/zenohd.yaml
+    volumes:
+      - ./zenohd.yaml:/etc/zenohd/zenohd.yaml
+    networks:
+      - zenoh
+      # - dds
+
+networks:
+  zenoh:
+    driver: bridge

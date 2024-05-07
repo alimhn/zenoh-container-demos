@@ -1,0 +1,27 @@
+connect:
+  endpoints: 
+    - 'tcp/localhost:7447'
+
+plugins:
+  dds:
+    allow:
+      - "DDSPerfRPingOU" # Raw DDS topics doesn't require a forward slash prefix
+      - "DDSPerfRPongOU" # Raw DDS topics doesn't require a forward slash prefix
+      - "/*/DDSPerfRPingOU" # Raw DDS topics doesn't require a forward slash prefix
+      - "/*/DDSPerfRPongOU" # Raw DDS topics doesn't require a forward slash prefix
+      - "DDSPerfCPUStats" # Raw DDS topics doesn't require a forward slash prefix
+      - "DDSPerfRDataOU" # Raw DDS topics doesn't require a forward slash prefix
+      - "/*/DDSPerfCPUStats" # Raw DDS topics doesn't require a forward slash prefix
+      - "/*/DDSPerfRDataOU" # Raw DDS topics doesn't require a forward slash prefix
+      - "DDSPerfRPingKS" # Raw DDS topics doesn't require a forward slash prefix
+      - "DDSPerfRPongKS" # Raw DDS topics doesn't require a forward slash prefix
+      - "/*/DDSPerfRPingKS" # Raw DDS topics doesn't require a forward slash prefix
+      - "/*/DDSPerfRPongKS" # Raw DDS topics doesn't require a forward slash prefix
+      - "DDSPerfCPUStats" # Raw DDS topics doesn't require a forward slash prefix
+      - "DDSPerfRDataKS" # Raw DDS topics doesn't require a forward slash prefix
+      - "/*/DDSPerfCPUStats" # Raw DDS topics doesn't require a forward slash prefix
+      - "/*/DDSPerfRDataKS" # Raw DDS topics doesn't require a forward slash prefix
+      - "/*/*"
+
+  # rest:
+  #   http_port: 8000
