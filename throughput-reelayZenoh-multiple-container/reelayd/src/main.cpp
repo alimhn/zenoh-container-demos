@@ -127,8 +127,15 @@ void monitor_on_sample(const z_sample_t* sample, void* context)
     auto* monitor = (reelay::monitor<input_t, output_t>*)context;
     auto json_string = simdjson::padded_string(
         (const char*)sample->payload.start, sample->payload.len);
+        
+    std::cout << json_string << std::endl;
+    std::cout << json_string.size() << std::endl;
+
     json_element = parser.parse(json_string);
     auto result = monitor->update(json_element);
+    // if (!result.empty()) {
+    //     std::cout << result << std::endl;
+    // }
 
     // timer starts after receiving first message
     if (first_message) {
@@ -136,9 +143,9 @@ void monitor_on_sample(const z_sample_t* sample, void* context)
         first_message = false; // first received time takes value just once
     }
 
-    if(not result.empty()) {
-        std::cout << result << std::endl;
-    }
+    // if(not result.empty()) {
+    //     std::cout << result << std::endl;
+    // }
 
     message_count++; 
 }
