@@ -1,0 +1,10 @@
+services:
+  combined-service:
+    build:
+      context: .
+    networks:
+      - dds
+
+networks:
+  dds:
+    driver: bridge

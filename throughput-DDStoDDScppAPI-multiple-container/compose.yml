@@ -1,0 +1,34 @@
+services:
+  talker:
+    build:
+      context: .
+    command: ./cxxThroughputPublisher 40
+    # command: ./ThroughputPublisher 8192 0 1 0 "Throughput example"
+    # network_mode: host
+    #   # - dds_network
+    networks:
+      - dds
+    
+
+  listener:
+    build:
+      context: .
+    command: ./cxxThroughputSubscriber
+    # command: ./ThroughputSubscriber 0 0 "Throughput example"
+    # network_mode: host
+      # - dds_network
+    networks:
+      - dds
+  
+#   router:
+#     image: eclipse/zenoh
+#     restart: unless-stopped
+#     networks:
+#       - zenoh
+#     ports:
+#       - 7447:7447
+#       - 8000:8000
+
+networks:
+  dds:
+    driver: bridge
