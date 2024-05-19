@@ -16,10 +16,8 @@ This example demonstrates a DDS network and Zenoh DDS bridge in containers. Both
 # Launch Zenoh network and Zenoh bridge in containers 
 # Inside the folder "latency-DDStoZenoh-single-container"
 # Build the container:
-docker build -t ls-zenoh-dds .
-
+docker compose build
 # Run the docker, you can change the message rate as follow:
-docker run -it ls-zenoh-dds ping 100000Hz
-
+docker compose up
 # You can see the latency results in output
  

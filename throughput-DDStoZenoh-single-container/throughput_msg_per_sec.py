@@ -1,6 +1,8 @@
 import time
 import argparse
 import zenoh
+import signal
+import sys
 
 from dataclasses import dataclass
 
@@ -16,17 +18,22 @@ class KeyedSeq(IdlStruct, typename="KeyedSeq"):
     keyval: uint32
     baggage: sequence[uint8]
 
-
 message_count = 0
 #callback 
 def chatter_callback(sample: zenoh.Sample):
     global message_count
     message_count += 1
 
-def main():
+def signal_handler(sig, frame):
+    global session, sub
+    print('Ctrl+C received! Exiting gracefully...')
+    sub.undeclare()
+    session.close()
+    sys.exit(0)
 
-    global message_count
-    print ("Calculating throughput(msg/s)...\n\n")
+def main():
+    global message_count, session, sub
+    print("Calculating throughput(msg/s)...\n\n")
 
     parser = argparse.ArgumentParser(
         prog='listener',
@@ -37,11 +44,13 @@ def main():
         help='A configuration file.')
     args = parser.parse_args()
    
-    # Create Zenoh Config from file if provoded, or a default one otherwise
+    # Create Zenoh Config from file if provided, or a default one otherwise
     conf = zenoh.Config.from_file(args.config) if args.config is not None else zenoh.Config()
     session = zenoh.open(conf)
 
     sub = session.declare_subscriber('DDSPerfRDataKS', chatter_callback)
+
+    signal.signal(signal.SIGINT, signal_handler)
 
     try:
         duration = 15
@@ -49,15 +58,11 @@ def main():
     finally:
         sub.undeclare()
         session.close()
-  
     
     # Calculate message rate (msg/s)
     msg_per_sec = message_count / duration
         
-    print("Throughput as rate(msg/s)]: ", msg_per_sec)
+    print("Throughput as rate(msg/s): ", msg_per_sec)
 
 if __name__ == '__main__':
     main()
-
-
-

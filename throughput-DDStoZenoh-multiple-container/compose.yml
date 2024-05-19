@@ -4,18 +4,18 @@ services:
       context: .
       dockerfile: Dockerfile
     # command: ddsperf pub size 1k -T KS
-    command: cyclonedds performance publish --size 1k
+    command: cyclonedds performance publish --size 40
     networks:
       - dds
 
-  listener:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    # command: ddsperf -Qrss:1 sub -T KS
-    command: cyclonedds performance subscribe
-    networks:
-      - dds
+  # listener:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   # command: ddsperf -Qrss:1 sub -T KS
+  #   command: cyclonedds performance subscribe
+  #   networks:
+  #     - dds
 
   bridge:
     image: eclipse/zenoh-bridge-dds:latest

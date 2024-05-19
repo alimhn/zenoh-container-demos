@@ -30,19 +30,12 @@ python3 -m pip install eclipse-zenoh cyclonedds
 ```sh
 # Inside the folder "throughput-DDStoZenoh-single-container"
 # Build the docker image
-docker build -t ts-dds-zenoh-img .
-
+docker compose build
 # Run the container
-docker run -d --name ts-dds-zonoh ts-dds-zenoh-img
-
+docker compose up -d
 # Activate virtual environment
 source ~/.venv/zenoh/bin/activate
 
 # Run python api to see the throughput result
 python3 throughput_msg_per_sec.py
 
-# Stop containers after test is finished
-docker stop ts-dds-zonoh
-
-docker rm ts-dds-zonoh
-```

@@ -1,0 +1,17 @@
+services:
+  combined-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - dds
+      - zenoh
+    ports:
+      - 7447:7447
+      - 8000:8000
+
+networks:
+  dds:
+    driver: bridge
+  zenoh:
+    driver: bridge

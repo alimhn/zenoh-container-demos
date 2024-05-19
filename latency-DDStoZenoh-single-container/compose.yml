@@ -1,0 +1,16 @@
+services:
+  combined-service:
+    build:
+      context: .
+    networks:
+      - zenoh
+      - dds
+    ports:
+      - 7447:7447
+      - 8000:8000
+
+networks:
+  zenoh:
+    driver: bridge
+  dds:
+    driver: bridge

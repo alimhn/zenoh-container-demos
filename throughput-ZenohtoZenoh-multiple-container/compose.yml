@@ -2,7 +2,7 @@ services:
   talker:
     build:
       context: ./publisher
-    command: publisher 1024
+    command: publisher 100000
     networks:
       - zenoh
 

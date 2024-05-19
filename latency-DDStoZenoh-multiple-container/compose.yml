@@ -3,9 +3,9 @@ services:
     build:
       context: .
     # entrypoint: ""
-    command: ddsperf ping 100000Hz
+    command: ddsperf ping 100000Hz size 64 waitset
     networks:
-      - zenoh
+      - dds
 
   pong-zenoh:
     build:
@@ -22,8 +22,10 @@ services:
       - ./zenohd.yaml:/etc/zenohd/zenohd.yaml
     networks:
       - zenoh
-      # - dds
+      - dds
 
 networks:
   zenoh:
+    driver: bridge
+  dds:
     driver: bridge
