@@ -1,15 +1,7 @@
 services:
-  talker:
+  combined-service:
     build:
-      context: ./publisher
-    command: publisher 1024
-    networks:
-      - zenoh
-
-  listener:
-    build:
-      context: ./subscriber
-    command: subscriber
+      context: .
     networks:
       - zenoh
 

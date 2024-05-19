@@ -16,10 +16,7 @@ This example demonstrates a DDS network and Zenoh DDS bridge in containers. Both
 # Launch Zenoh network and Zenoh bridge in containers 
 # Inside the folder "throughput-ZenohtoZenoh-single-container"
 # Build the container:
-docker build -t ts-zenoh-zenoh-img .
+docker compose build
 
 # Run the docker:
-docker run -it --rm ts-zenoh-zenoh-img
-
-## ToDo
-bash script to change the message payload for a run
+docker compose up

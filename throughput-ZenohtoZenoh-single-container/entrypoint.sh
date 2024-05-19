@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Start the publisher
-publisher 100000 &
+publisher 40 &
 
 # Start the subscriber
 subscriber
