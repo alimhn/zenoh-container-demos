@@ -2,7 +2,8 @@ services:
   talker:
     build:
       context: ./publisher
-    command: python /app/main.py
+    command: publisher -r /app/publisher/timescales/largesuite/RecurGLB/RecurGLB10.jsonl
+    # network_mode: host
     networks:
       - zenoh
 
@@ -10,17 +11,18 @@ services:
     build:
       context: ./reelayd
     command: reelayd --expr "{p}"
+    # network_mode: host
     networks:
       - zenoh
   
-  router:
-    image: eclipse/zenoh
-    restart: unless-stopped
-    networks:
-      - zenoh
-    ports:
-      - 7447:7447
-      - 8000:8000
+  # router:
+  #   image: eclipse/zenoh
+  #   restart: unless-stopped
+  #   networks:
+  #     - zenoh
+  #   ports:
+  #     - 7447:7447
+  #     - 8000:8000
 
 networks:
   zenoh:

@@ -129,9 +129,9 @@ void monitor_on_sample(const z_sample_t* sample, void* context)
         (const char*)sample->payload.start, sample->payload.len);
     json_element = parser.parse(json_string);
     auto result = monitor->update(json_element);
-    // if (!result.empty()) {
-    //     std::cout << result << std::endl;
-    // }
+    if (!result.empty()) {
+        std::cout << result << std::endl;
+    }
 
     // timer starts after receiving first message
     if (first_message) {
