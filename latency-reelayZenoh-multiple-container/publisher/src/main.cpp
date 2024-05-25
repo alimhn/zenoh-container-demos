@@ -11,6 +11,17 @@
 #include "zenoh.h"
 
 #define DEFAULT_JSON_FILE "/app/publisher/timescales/largesuite/AbsentAQ/AbsentAQ10.jsonl"
+// #define DEFAULT_JSON_FILE "/app/timescales/largesuite/AbsentBQR/AbsentBQR10.jsonl"
+// #define DEFAULT_JSON_FILE "/app/timescales/largesuite/AbsentBR/AbsentBR10.jsonl"
+// #define DEFAULT_JSON_FILE "/app/timescales/largesuite/RecurGLB/RecurGLB10.jsonl"
+// #define DEFAULT_JSON_FILE "/app/timescales/largesuite/RespondGLB/RespondGLB10.jsonl"
+// #define DEFAULT_JSON_FILE "/app/timescales/largesuite/AlwaysAQ/AlwaysAQ10.jsonl"
+// #define DEFAULT_JSON_FILE "/app/timescales/largesuite/AlwaysBR/AlwaysBR10.jsonl"
+// #define DEFAULT_JSON_FILE "/app/timescales/largesuite/AlwaysBQR/AlwaysBQR10.jsonl"
+// #define DEFAULT_JSON_FILE "/app/timescales/largesuite/RecurBQR/RecurBQR10.jsonl"
+// #define DEFAULT_JSON_FILE "/app/timescales/largesuite/RecurBQR/RecurBQR10.jsonl"
+
+
 #define DEFAULT_PKT_SIZE 64
 #define DEFAULT_PING_NB 100
 #define DEFAULT_WARMUP_MS 1000
@@ -92,6 +103,20 @@ int main(int argc, char** argv) {
 
     std::string line;
 
+    if (!std::getline(file, line)) {
+        printf("Error reading file %s\n", args.json_file.c_str());
+        return 1;
+    }
+
+    size_t data_size = line.size();
+    char* data = (char *)malloc(data_size + 1); // +1 for null terminator
+    if (data == NULL) {
+        printf("Error allocating memory for data\n");
+        return 1;
+    }
+    memcpy(data, line.c_str(), data_size);
+    data[data_size] = '\0'; // Ensure null-termination
+
     pthread_mutex_lock(&mutex);
     // if (args.warmup_ms) {
     //     printf("Warming up for %dms...\n", args.warmup_ms);
@@ -106,15 +131,15 @@ int main(int argc, char** argv) {
     //     }
     // }
 
-    while (std::getline(file, line)) {
-        size_t data_size = line.size();
-        char* data = (char *)malloc(data_size + 1); // +1 for null terminator
-        if (data == NULL) {
-            printf("Error allocating memory for data\n");
-            continue;
-        }
-        memcpy(data, line.c_str(), data_size);
-        data[data_size] = '\0'; // Ensure null-termination
+    while (true) {
+        // size_t data_size = line.size();
+        // char* data = (char *)malloc(data_size + 1); // +1 for null terminator
+        // if (data == NULL) {
+        //     printf("Error allocating memory for data\n");
+        //     continue;
+        // }
+        // memcpy(data, line.c_str(), data_size);
+        // data[data_size] = '\0'; // Ensure null-termination
 
         struct timespec t_start, t_stop, t_timeout;
         clock_gettime(CLOCK_REALTIME, &t_timeout);
@@ -126,13 +151,13 @@ int main(int argc, char** argv) {
         clock_gettime(CLOCK_MONOTONIC, &t_stop);
         int result = (1000000 * (t_stop.tv_sec - t_start.tv_sec) + (t_stop.tv_nsec - t_start.tv_nsec) / 1000);
         printf("%d bytes: rtt=%luµs, lat=%luµs\n", data_size, result, result / 2);
-        free(data);
+        // free(data);
     }
 
     pthread_mutex_unlock(&mutex);
     pthread_mutex_destroy(&mutex);
     // free(result);
-    // free(data);
+    free(data);
     z_drop(z_move(sub));
     z_drop(z_move(pub));
     z_close(z_move(session));

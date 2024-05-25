@@ -2,26 +2,28 @@ services:
   talker:
     build:
       context: ./publisher
-    command: publisher -r 100000
-    networks:
-      - zenoh
+    command: publisher -r 1000000
+    # network_mode: host
+    # networks:
+    #   - zenoh
 
   reelayd:
     build:
       context: ./reelayd
     command: reelayd --expr "{p}"
-    networks:
-      - zenoh
+    network_mode: service:talker
+    # networks:
+    #   - zenoh
   
-  router:
-    image: eclipse/zenoh
-    restart: unless-stopped
-    networks:
-      - zenoh
-    ports:
-      - 7447:7447
-      - 8000:8000
+  # router:
+  #   image: eclipse/zenoh
+  #   restart: unless-stopped
+  #   networks:
+  #     - zenoh
+  #   ports:
+  #     - 7447:7447
+  #     - 8000:8000
 
-networks:
-  zenoh:
-    driver: bridge
+# networks:
+#   zenoh:
+#     driver: macvlan
